@@ -1,36 +1,9 @@
 import Heading from "../Heading"
-import React, { useEffect } from "react"
-import { useSelector, useDispatch }  from "react-redux";
-import { getAllProducts, getProductByID, getProductsByCategory } from "../../../app/Actions/Index";
+import React from "react"
+import { useSelector }  from "react-redux";
 import ProductCard from "../../../components/Common/Product/ProductCard"; 
 
 const HotProduct = () => {
-
-    const dispatch = useDispatch();
-    // Dispatch the action to fetch products when the component mounts
-    useEffect(() => {
-        dispatch(getAllProducts());
-
-        // Dispatch the action to fetch products by category for 'healthy'
-        dispatch(getProductsByCategory('healthy'));
-    
-        // Dispatch the action to fetch products by category for 'snacks'
-        dispatch(getProductsByCategory('snack'));
-    
-        // Dispatch the action to fetch products by category for 'dessert'
-        dispatch(getProductsByCategory('dessert'));
-    
-        // Dispatch the action to fetch products by category for 'gluten_free'
-        dispatch(getProductsByCategory('gluten_free'));
-    
-        // Dispatch the action to fetch products by category for 'italian'
-        dispatch(getProductsByCategory('italian'));
-    
-        // Dispatch the action to fetch products by category for 'seasonal'
-        dispatch(getProductsByCategory('seasonal'));
-    }, []);
-
-   // dispatch(getAllProducts());
 
     const TumUrunler = useSelector((state) => state.products.products);
     const healthy = useSelector((state) => state.products.healthy);
@@ -39,18 +12,7 @@ const HotProduct = () => {
     const gluten_free = useSelector((state) => state.products.gluten_free);
     const italian = useSelector((state) => state.products.italian);
     const seasonal = useSelector((state) => state.products.seasonal);
-  
-    /*
-    extraReducers: (builder) => {
-        builder.addCase(fetchProducts.fulfilled, (state, action) => {
-            console.log("Product Fetch Bitti")
-            state.isLoading = false
-            state.isError = false
-            state.products = action.payload.data.result;
-            console.log(action.payload.data.result)
-        })
-        
-    */
+    
     return(
         <>
         <section id="hot-Product_area" className="ptb-100">
@@ -74,7 +36,7 @@ const HotProduct = () => {
                         <div className="tab-content">
                             <div id="new_arrival" className="tab-pane fade show in active">
                                 <div className="row">
-                               {TumUrunler.slice(5,9).map((urun,index)=> (
+                               {seasonal.map((urun,index)=> (
                                 <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
                                     <ProductCard data={urun} />
                                     </div>
@@ -110,7 +72,7 @@ const HotProduct = () => {
                             </div>
                             <div id="on_sall" className="tab-pane fade">
                             <div className="row">
-                               {TumUrunler.slice(7,13).map((urun,index)=> (
+                               {gluten_free.map((urun,index)=> (
                                 <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
                                     <ProductCard data={urun} />
                                     </div>

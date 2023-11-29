@@ -1,20 +1,66 @@
 import React, {useState} from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch }  from "react-redux";
 import {Link} from "react-router-dom";
 import {AiOutlineHeart} from 'react-icons/ai';
+import { toggleFavorite } from "../../../app/Actions/Index";
+import Swal from "sweetalert2";
+
 //Her bir ürünü temsil edecek
 const ProductCard = (props) => {
     let dispatch=  useDispatch();
+    let user = useSelector((state) => state.user.user);
+    let favs = useSelector((state) => state.products.favorites);
 
     const sepeteEkle = async(id) => {
         console.log( id, " tıklandı");
         dispatch({type :"products/AddToCart", payload : {id}})
     }
-    
-    const favorilereEkle = async(id) => {
-        console.log(id, " tıklandı");
-        dispatch({type :"products/addToFavorites", payload : {id}})
+
+    // Add to Favorite
+    const addToFav = (productId) => {
+        if(user.access_token){
+            // Check if the product is already in favorites
+            if (favs.find((fav) => fav.productId === productId)) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Already in Favorites',
+                    text: 'This product is already in your favorites!',
+                });
+            } else {
+                try{
+                    dispatch(
+                        toggleFavorite({
+                            user,
+                            productId,
+                            _action: 'add'
+                        })
+                    );
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Favorites',
+                        text: 'This product has been added to your favorites!',
+                    });
+                }
+                catch (error) {
+                    // Show a Swal alert for errors during dispatch
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while adding to favorites. Please try again.',
+                    });
+                }
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Login Required',
+                text: 'Please log in to add items to your favorites.',
+            });
+        }
     }
+
     //console.log("Insidecard ", props.data.name);
     return(
         <>
@@ -31,7 +77,7 @@ const ProductCard = (props) => {
                 </span>
                 <div className="actions">
                     <a href="#!" className="action wishlist" title="Favorilere Ekle"
-                        onClick={() => favorilereEkle(props.data.productId)} ><AiOutlineHeart />
+                        onClick={() => addToFav(props.data.productId)} ><AiOutlineHeart />
                     </a>
                 </div>
                 <button type="button" className="add-to-cart offcanvas-toggle" onClick={() => sepeteEkle(props.data.productId)}>

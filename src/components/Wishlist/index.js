@@ -1,24 +1,42 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
+import { getUserFavorites, toggleFavorite, deleteAllFavorites } from "../../app/Actions/Index"
 import img from '../../assets/img/common/empty-cart.png'
 
 const WishArea = () => {
     let dispatch = useDispatch();
+    let user = useSelector((state) => state.user.user);
+    useEffect(() => {
+        dispatch(getUserFavorites(user));
+    }, []);
+
     let favorilerdekiUrunler = useSelector((state) => state.products.favorites);
-    // Remove from Cart
-    const rmProduct = (id) => {
-        dispatch({ type: "products/removeToFav", payload: { id } });
+
+    // Add to Favorites
+    const rmProduct = (productId) => {
+        dispatch(
+            toggleFavorite({
+                user,
+                productId,
+                _action: 'remove'
+            })
+        );
     }
+
     // Clear
     const clearFav = () => {
-        dispatch({ type: "products/clearFav" });
+        dispatch(
+            deleteAllFavorites({
+                user
+            })
+        );
     }
 
 
     return (
         <>
-            {favorilerdekiUrunler.length
+            {favorilerdekiUrunler.length > 0
                 ?
                 <section id="cart_area_one" className="ptb-100">
                     <div className="container">
@@ -40,19 +58,19 @@ const WishArea = () => {
                                                 {favorilerdekiUrunler.map((data, index) => (
                                                     <tr key={index}>
                                                         <td className="product_remove">
-                                                            <i className="fa fa-trash text-danger" onClick={() => rmProduct(data.id)} style={{ 'cursor': 'pointer' }}></i>
+                                                            <i className="fa fa-trash text-danger" onClick={() => rmProduct(data.productDto.productId)} style={{ 'cursor': 'pointer' }}></i>
                                                         </td>
                                                         <td className="product_thumb">
-                                                            <Link to={`/product-details-one/${data.id}`}>
-                                                                <img src={data.img} alt="img" />
+                                                            <Link to={`/product-details-one/${data.productDto.productId}`}>
+                                                                <img src={data.productDto.imageUrl} alt="img" />
                                                             </Link>
                                                         </td>
                                                         <td className="product_name">
-                                                            <Link to={`/product-details-one/${data.id}`}>
-                                                                {data.title}
+                                                            <Link to={`/product-details-one/${data.productDto.productId}`}>
+                                                                {data.productDto.name}
                                                             </Link>
                                                         </td>
-                                                        <td className="product-price">{data.price}.00 TL</td>
+                                                        <td className="product-price">{data.productDto.price}.00 TL</td>
 
                                                     </tr>
                                                 ))

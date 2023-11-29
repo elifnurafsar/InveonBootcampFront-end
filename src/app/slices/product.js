@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductData } from "../data/ProductData";
 import Swal from "sweetalert2";
-import { getAllProducts, getProductByID, getProductsByCategory } from "../Actions/Index"
+import { getAllProducts, getProductByID, getProductsByCategory, getUserFavorites, toggleFavorite, deleteAllFavorites } from "../Actions/Index"
 
 
 const productsSlice = createSlice({
@@ -9,6 +9,7 @@ const productsSlice = createSlice({
     initialState: {
         products: ProductData,
         snacks: [],
+        seasonal: [],
         desserts: [],
         italian: [],
         healthy: [],
@@ -62,11 +63,12 @@ const productsSlice = createSlice({
             .addCase(getAllProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.products = action.payload.result;
+                //console.log("Fullfilled: ", state.products);
             })
             .addCase(getAllProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-                console.log("*", state.error);
+                //console.log("*", state.error);
             })
             .addCase(getProductByID.pending, (state) => {
                 state.loading = true;
@@ -75,14 +77,12 @@ const productsSlice = createSlice({
             })
             .addCase(getProductByID.fulfilled, (state, action) => {
                 state.loading = false;
-                //console.log("payload ", action.payload);
                 state.single = action.payload.result;
-                //console.log("single ", state.single);
             })
             .addCase(getProductByID.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-                console.log("*", state.error);
+                //console.log("*", state.error);
             })
             .addCase(getProductsByCategory.pending, (state) => {
                 state.loading = true;
@@ -90,11 +90,8 @@ const productsSlice = createSlice({
                 //console.log("*NULL STATE GET BY CATEGORY*");
             })
             .addCase(getProductsByCategory.fulfilled, (state, action) => {
-                /*state.loading = false;
-                state.products = action.payload;*/
                 state.loading = false;
 
-                //console.log(action.payload.categoryName, "<<<<<<<<<");
                 const categoryName = action.payload.categoryName;
 
                 // Check the category and update the corresponding array in the state
@@ -128,6 +125,52 @@ const productsSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
                 console.log("*", state.error);
+            })
+            .addCase(getUserFavorites.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserFavorites.fulfilled, (state, action) => {
+                //console.log("Inside the getUserFavorites reducer ");
+                state.loading = false;
+                state.favorites = action.payload;
+            })
+            .addCase(getUserFavorites.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(toggleFavorite.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(toggleFavorite.fulfilled, (state, action) => {
+                state.loading = false;
+                if(action.meta.arg._action == 'remove'){
+                    state.favorites = state.favorites.filter(
+                        (favoriteItem) => favoriteItem.productId !== action.meta.arg.productId
+                    );
+                }
+                else if(action.meta.arg._action == 'add'){
+                    
+                }
+            })
+            .addCase(toggleFavorite.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(deleteAllFavorites.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteAllFavorites.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log("Action: ", action);
+                state.favorites = [];
+                
+            })
+            .addCase(deleteAllFavorites.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     },
 })

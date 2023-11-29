@@ -41,10 +41,9 @@ function App() {
           user_id: user.profile.sub
         }
         dispatch({ type: "user/login", payload: { user: userProfile, status: true } })
-        //axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
       }
     });
-  }, [dispatch]);
+  }, []);
 
 
   return (

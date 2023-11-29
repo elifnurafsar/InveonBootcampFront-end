@@ -2,12 +2,13 @@ import ProductInfo from './ProductInfo'
 import RelatedProduct from './RelatedProduct'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import Swal from "sweetalert2";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import React, { useEffect } from "react"
 import { useSelector, useDispatch }  from "react-redux";
-import { getProductByID } from "../../../app/Actions/Index";
+import { getProductByID, toggleFavorite } from "../../../app/Actions/Index";
 import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 
@@ -21,15 +22,51 @@ const ProductDetailsTwo = () => {
     }, []);
 
     let product = useSelector((state) => state.products.single);
-
+    let favs = useSelector((state) => state.products.favorites);
+    let user = useSelector((state) => state.user.user);
+    
     // Add to cart
     const addToCart = async (id) => {
-        dispatch({ type: "products/AddToCart", payload: { productId } })
+        dispatch({ type: "products/AddToCart", payload: { product_id } })
     }
 
-    // Add to Favorite
-    const addToFav = async (id) => {
-        dispatch({ type: "products/addToFavorites", payload: { productId } })
+    // Add to Favorites
+    const addToFav = (productId) => {
+        if(user.access_token){
+            // Check if the product is already in favorites
+            if (favs.find((fav) => fav.productId === productId)) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Already in Favorites',
+                    text: 'This product is already in your favorites!',
+                });
+            } else {
+                try{
+                    dispatch(
+                        toggleFavorite({
+                            user,
+                            productId,
+                            _action: 'add'
+                        })
+                    );
+                }
+                catch (error) {
+                    // Show a Swal alert for errors during dispatch
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while adding to favorites. Please try again.',
+                    });
+                }
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Login Required',
+                text: 'Please log in to add items to your favorites.',
+            });
+        }
     }
 
     // Quenty Inc Dec
