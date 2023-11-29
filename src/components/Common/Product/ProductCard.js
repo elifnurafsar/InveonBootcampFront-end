@@ -19,37 +19,22 @@ const ProductCard = (props) => {
     // Add to Favorite
     const addToFav = (productId) => {
         if(user.access_token){
-            // Check if the product is already in favorites
-            if (favs.find((fav) => fav.productId === productId)) {
+            try{
+                dispatch(
+                    toggleFavorite({
+                        user,
+                        productId,
+                        _action: 'add'
+                    })
+                );
+            }
+            catch (error) {
+                // Show a Swal alert for errors during dispatch
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Already in Favorites',
-                    text: 'This product is already in your favorites!',
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while adding to favorites. Please try again.',
                 });
-            } else {
-                try{
-                    dispatch(
-                        toggleFavorite({
-                            user,
-                            productId,
-                            _action: 'add'
-                        })
-                    );
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Added to Favorites',
-                        text: 'This product has been added to your favorites!',
-                    });
-                }
-                catch (error) {
-                    // Show a Swal alert for errors during dispatch
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: 'An error occurred while adding to favorites. Please try again.',
-                    });
-                }
             }
         }
         else{
