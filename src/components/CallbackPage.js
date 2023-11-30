@@ -23,7 +23,7 @@ const CallbackPage = () => {
   };
 
   const errorCallback = (error) => {
-    console.log("Error in callback page: ", error);
+    //console.log("Error in callback page: ", error);
     navigate('/');
   };
 

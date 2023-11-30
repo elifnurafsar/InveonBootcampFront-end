@@ -1,17 +1,36 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Coupon from './Coupon'
 import TotalCart from './TotalCart'
 import { Link } from 'react-router-dom'
 import img from '../../assets/img/common/empty-cart.png'
 import { useDispatch, useSelector } from "react-redux";
+import { getMyBasket, removeFromMyBasket } from "../../app/Actions/Index";
 
 const CartArea = () => {
     let dispatch = useDispatch();
-    let carts = useSelector((state) => state.products.carts);
+    let user = useSelector((state) => state.user.user);
+
+    useEffect(() => {
+        dispatch(
+            getMyBasket({
+                user
+            })
+        );
+    }, []);
+
+    let carts = useSelector((state) => state.shoppingcart.carts);
+
     // Remove from Cart
-    const rmProduct = (id) => {
-        dispatch({ type: "products/removeCart", payload: { id } });
+    const rmProduct = (cartDetailsId) => {
+        console.log("CD ID: ", cartDetailsId);
+        dispatch(
+            removeFromMyBasket({
+                user,
+                cartDetailsId
+            })
+        );
     }
+
     // Clear
     const clearCarts = () => {
         dispatch({ type: "products/clearCart" });
@@ -46,21 +65,21 @@ const CartArea = () => {
                                                 {carts.map((data, index) => (
                                                     <tr key={index}>
                                                         <td className="product_remove">
-                                                            <i className="fa fa-trash text-danger" onClick={() => rmProduct(data.id)} style={{ 'cursor': 'pointer' }}></i>
+                                                            <i className="fa fa-trash text-danger" onClick={() => rmProduct(data.cartDetailsId)} style={{ 'cursor': 'pointer' }}></i>
                                                         </td>
                                                         <td className="product_thumb">
-                                                            <Link to={`/product-details-one/${data.id}`}>
-                                                                <img src={data.img} alt="img" />
+                                                            <Link to={`/product-details-one/${data.productId}`}>
+                                                                <img src={data.imageUrl} alt="img" />
                                                             </Link>
                                                         </td>
                                                         <td className="product_name">
-                                                            <Link to={`/product-details-one/${data.id}`}>
-                                                                {data.title}
+                                                            <Link to={`/product-details-one/${data.productId}`}>
+                                                                {data.name}
                                                             </Link>
                                                         </td>
                                                         <td className="product-price">{data.price}.00 TL</td>
                                                         <td className="product_quantity">
-                                                            <input min="1" max="100" type="number" onChange={e => cartValUpdate(e.currentTarget.value, data.id)} defaultValue={data.quantity || 1} />
+                                                            <input min="1" max="100" type="number" onChange={e => cartValUpdate(e.currentTarget.value, data.productId)} defaultValue={data.quantity || 1} />
                                                         </td>
                                                         <td className="product_total">{data.price * (data.quantity || 1)}.00 TL</td>
                                                     </tr>

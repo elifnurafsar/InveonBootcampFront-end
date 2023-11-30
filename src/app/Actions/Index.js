@@ -208,4 +208,172 @@ export const deleteAllFavorites = createAsyncThunk('favorites/deleteAllFavorites
     }
   }
 );
-  
+
+export const getMyBasket = createAsyncThunk('cart/getMyBasket', async (user) => {
+    try {
+      const headers = {
+        'Authorization': `Bearer ${user.user.access_token}`,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Headers': 'content-type',
+        'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+        'Access-Control-Max-Age': '1800',
+      };
+
+      const response = await axios.get(`https://localhost:5050/api/cart/GetCart/${user.user.user_id}`, { headers });
+
+      const responseData = response.data;
+      //console.log("Inside getMyBasket the result is: ", responseData.result);
+
+      if (responseData.isSuccess) {
+        const cartDetails = responseData.result?.cartDetails.map((detail) => ({
+          CartHeaderId: responseData.result.cartHeader.cartHeaderId,
+          cartDetailsId: detail.cartDetailsId,
+          productId: detail.product.productId,
+          name: detail.product.name,
+          price: detail.product.price,
+          imageUrl: detail.product.imageUrl,
+          categoryName: detail.product.categoryName, 
+          count: detail.count,
+        }));
+        return cartDetails;
+      } else {
+        // Handle the case where the request is not successful
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to retrieve your basket. Please try again.',
+        });
+        
+      }
+    } catch (error) {
+      // Handle the case where an error occurred
+      console.error('API Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      
+    }
+  }
+);
+
+
+export const addToMyBasket = createAsyncThunk('cart/addToMyBasket', async ({ user, product, count }) => {
+    let cartHeader = {
+      CartHeaderId: 0,
+      UserId: user.user_id,
+      CouponCode: null
+    };
+    let cartDetails = [
+      {
+        CartDetailsId: 0,
+        CartHeader: null,
+        CartHeaderId: 0,
+        Product: product,
+        ProductId: product.productId,
+        Count: count
+      }
+    ];
+    let cartDto = {
+      CartHeader: cartHeader,
+      CartDetails: cartDetails
+    };
+    const headers = {
+      'Authorization': `Bearer ${user.access_token}`,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Headers': 'content-type',
+      'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+      'Access-Control-Max-Age': '1800',
+    };
+    try {
+      const response = await axios.post(
+        `https://localhost:5050/api/cart`,
+        cartDto,
+        { headers }
+      );
+
+      const responseData = response.data;
+      if (responseData.isSuccess) {
+        // Handle the case where the request is successful
+        Swal.fire({
+          icon: 'success',
+          title: 'Added to Basket',
+          text: 'The item has been added to your basket.',
+        });
+        return responseData.result;
+      } else {
+        // Handle the case where the request is not successful
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to add the item to your basket. Please try again.',
+        });
+      
+      }
+    } catch (error) {
+      // Handle the case where an error occurred
+      console.error('API Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      
+    }
+  }
+);
+
+
+export const removeFromMyBasket = createAsyncThunk('cart/removeFromMyBasket', async ({ user, cartDetailsId }) => {
+  console.log("cartDetailsId ", cartDetailsId);
+  const headers = {
+    'Authorization': `Bearer ${user.access_token}`,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+    'Access-Control-Max-Age': '1800',
+    'Content-Type': 'application/json'
+  };  
+  try {
+    let cartId = cartDetailsId;
+      const response = await axios.post(
+        `https://localhost:5050/api/cart/RemoveCart`,
+        cartId,
+        { headers }
+      );
+
+      const responseData = response.data;
+    
+      if (responseData.isSuccess) {
+        // Handle the case where the request is successful
+        Swal.fire({
+          icon: 'success',
+          title: 'Removed from Basket',
+          text: 'The item has been removed from your basket.',
+        });
+        return responseData.result; // You can adjust the return value based on your needs
+      } else {
+        // Handle the case where the request is not successful
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to remove the item from your basket. Please try again.',
+        });
+        
+      }
+    } catch (error) {
+      // Handle the case where an error occurred
+      console.error('API Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      
+    }
+  }
+);

@@ -1,19 +1,48 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch }  from "react-redux";
 import {Link} from "react-router-dom";
 import {AiOutlineHeart} from 'react-icons/ai';
-import { toggleFavorite } from "../../../app/Actions/Index";
+import { toggleFavorite, addToMyBasket, getProductByID } from "../../../app/Actions/Index";
 import Swal from "sweetalert2";
 
 //Her bir ürünü temsil edecek
 const ProductCard = (props) => {
     let dispatch=  useDispatch();
     let user = useSelector((state) => state.user.user);
-    let favs = useSelector((state) => state.products.favorites);
+    useEffect(() => {
+        dispatch(getProductByID(props.data.productId));
+    }, []);
 
-    const sepeteEkle = async(id) => {
-        console.log( id, " tıklandı");
-        dispatch({type :"products/AddToCart", payload : {id}})
+    let product = useSelector((state) => state.products.single);
+
+    const addToCart = async(productId) => {
+        console.log("Sepete Ekle Methodu: ", productId);
+        if(user.access_token){
+            try{
+                dispatch(
+                    addToMyBasket({
+                        user,
+                        product,
+                        count: 1
+                    })
+                );
+            }
+            catch (error) {
+                // Show a Swal alert for errors during dispatch
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while adding to basket. Please try again.',
+                });
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Login Required',
+                text: 'Please log in to add items to your basket.',
+            });
+        }
     }
 
     // Add to Favorite
@@ -65,7 +94,7 @@ const ProductCard = (props) => {
                         onClick={() => addToFav(props.data.productId)} ><AiOutlineHeart />
                     </a>
                 </div>
-                <button type="button" className="add-to-cart offcanvas-toggle" onClick={() => sepeteEkle(props.data.productId)}>
+                <button type="button" className="add-to-cart offcanvas-toggle" onClick={() => addToCart(props.data.productId)}>
                     Sepete Ekle
                 </button>
              </div>

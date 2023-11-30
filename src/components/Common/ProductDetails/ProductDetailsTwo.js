@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import React, { useEffect } from "react"
 import { useSelector, useDispatch }  from "react-redux";
-import { getProductByID, toggleFavorite } from "../../../app/Actions/Index";
+import { getProductByID, toggleFavorite, addToMyBasket } from "../../../app/Actions/Index";
 import { useParams } from 'react-router-dom';
 import { RatingStar } from "rating-star";
 
@@ -19,17 +19,42 @@ const ProductDetailsTwo = () => {
 
     useEffect(() => {
         dispatch(getProductByID(product_id));
-    }, []);
+    });
 
     let product = useSelector((state) => state.products.single);
-    let favs = useSelector((state) => state.products.favorites);
     let user = useSelector((state) => state.user.user);
-    
-    // Add to cart
-    const addToCart = async (id) => {
-        dispatch({ type: "products/AddToCart", payload: { product_id } })
-    }
 
+    // Add to cart
+    const addToCart = async(productId) => {
+        console.log("Sepete Ekle Methodu: ", productId);
+        if(user.access_token){
+            try{
+                dispatch(
+                    addToMyBasket({
+                        user,
+                        product,
+                        count: 1
+                    })
+                );
+            }
+            catch (error) {
+                // Show a Swal alert for errors during dispatch
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while adding to basket. Please try again.',
+                });
+            }
+        }
+        else{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Login Required',
+                text: 'Please log in to add items to your basket.',
+            });
+        }
+    }
+    
     // Add to Favorites
     const addToFav = (productId) => {
         if(user.access_token){

@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from "react-redux";
 
 const TotalCart = (props) => {
-    let carts = useSelector((state) => state.products.carts);
-
+    let carts = useSelector((state) => state.shoppingcart.carts);
     const cartTotal = () => {
         return carts.reduce(function (total, item) {
             return total + ((item.quantity || 1) * item.price)
@@ -23,7 +22,7 @@ const TotalCart = (props) => {
                             </div>
                             <div className="cart_subtotal ">
                                 <p>Kargo</p>
-                                <p className="cart_amount"><span>Sabit Fiyat</span> 00 TL</p>
+                                <p className="cart_amount"><span>Sabit Fiyat</span>30.00 TL</p>
                             </div>
                             <a href="#!">Kargo Hesapla</a>
 
