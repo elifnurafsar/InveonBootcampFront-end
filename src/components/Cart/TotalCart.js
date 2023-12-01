@@ -32,7 +32,7 @@ const TotalCart = (props) => {
                             </div>
                             <div className="checkout_btn">
 
-                                <Link to="/checkout-one" className="theme-btn-one btn-black-overlay btn_sm">
+                                <Link to="/checkout-two" className="theme-btn-one btn-black-overlay btn_sm">
                                     Alışverişi Tamamla
                                 </Link>
                             </div>
@@ -48,11 +48,6 @@ const TotalCart = (props) => {
                                 <p>Alt Toplam : </p>
                                 <p className="cart_amount">{cartTotal()}.00 TL</p>
                             </div>
-                            <div className="cart_subtotal ">
-                                <p>Kargo</p>
-                                <p className="cart_amount"><span>Sabit Fiyat</span> 00 TL</p>
-                            </div>
-                            <a href="#!">Kargo Hesapla</a>
 
                             <div className="cart_subtotal">
                                 <p>Toplam</p>

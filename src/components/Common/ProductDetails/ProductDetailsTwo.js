@@ -26,7 +26,7 @@ const ProductDetailsTwo = () => {
 
     // Add to cart
     const addToCart = async(productId) => {
-        console.log("Sepete Ekle Methodu: ", productId);
+        //console.log("Sepete Ekle Methodu: ", productId);
         if(user.access_token){
             try{
                 dispatch(

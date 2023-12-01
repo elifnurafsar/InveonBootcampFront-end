@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector }  from "react-redux";
 import SideBar from './SideBar'
 import ProductCard from '../Common/Product/ProductCard'
+import err_img from '../../assets/img/svg/chef.svg' 
 
 const LeftSideBar = () => {
    
@@ -63,6 +64,7 @@ const LeftSideBar = () => {
                 <div className="container">
                     <div className="row">
                         <SideBar filterEvent={categoryFilter}/>
+                        {products != null && products.length > 0 ? (
                         <div className="col-lg-9">
                             <div className="row">
                                 {products.map((data, index) => (
@@ -95,6 +97,14 @@ const LeftSideBar = () => {
                                 </div>
                             </div>
                         </div>
+                        ):
+                        <div>
+                            <div className="col-lg-9">
+                                <img style={{ width: "150px", height: "150px"}} src={err_img} alt="An error occurred!"/>
+                                <h3 style={{color: "#dc143c"}}>Keep tracking, new flavours are coming soon...</h3>
+                            </div>
+                        </div>
+                        }
                     </div>
                 </div>
             </section>

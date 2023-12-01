@@ -39,14 +39,14 @@ const CheckOutTwo = () => {
                                                             <label htmlFor="country">Ülke<span className="text-danger">*</span></label>
                                                             <select className="country_option nice-select wide form-control"
                                                                 name="country" id="country">
-                                                                <option defaultValue="2">Turkey</option>
-                                                                <option defaultValue="3">Germany</option>
-                                                                <option defaultValue="4">United Kingdom</option>
-                                                                <option defaultValue="5">United States</option>
-                                                                <option defaultValue="6">Russia</option>
-                                                                <option defaultValue="7">United Arab Emirates</option>
-                                                                <option defaultValue="8">Switzerland</option>
-                                                                <option defaultValue="9">Canada</option>
+                                                                <option defaultValue="2">Bangladesh</option>
+                                                                <option defaultValue="3">Algeria</option>
+                                                                <option defaultValue="4">Afghanistan</option>
+                                                                <option defaultValue="5">Ghana</option>
+                                                                <option defaultValue="6">Albania</option>
+                                                                <option defaultValue="7">Bahrain</option>
+                                                                <option defaultValue="8">Colombia</option>
+                                                                <option defaultValue="9">Dominican Republic</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -66,6 +66,12 @@ const CheckOutTwo = () => {
                                                     <div className="col-12">
                                                         <div className="default-form-box">
                                                             <label>Şehir<span className="text-danger">*</span></label>
+                                                            <input type="text" className="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-12">
+                                                        <div className="default-form-box">
+                                                            <label>Ülke<span className="text-danger">*</span></label>
                                                             <input type="text" className="form-control" />
                                                         </div>
                                                     </div>

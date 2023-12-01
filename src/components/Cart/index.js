@@ -22,7 +22,7 @@ const CartArea = () => {
 
     // Remove from Cart
     const rmProduct = (cartDetailsId) => {
-        console.log("CD ID: ", cartDetailsId);
+        //console.log("CD ID: ", cartDetailsId);
         dispatch(
             removeFromMyBasket({
                 user,
@@ -42,7 +42,7 @@ const CartArea = () => {
 
     return (
         <>
-            {carts.length
+            {carts && carts.length
                 ?
                 <section id="cart_area_one" className="ptb-100">
                     <div className="container">

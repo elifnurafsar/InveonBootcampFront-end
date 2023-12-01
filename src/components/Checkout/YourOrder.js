@@ -1,42 +1,49 @@
-import React from 'react'
-import {Link} from "react-router-dom";
+import React, {useEffect} from "react";
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { getMyBasket } from "../../app/Actions/Index";
+
 const YourOrder = () => {
+    let dispatch = useDispatch();
+    let user = useSelector((state) => state.user.user);
+
+    useEffect(() => {
+        dispatch(
+            getMyBasket({
+                user
+            })
+        );
+    }, []);
+
+    let items = useSelector((state) => state.shoppingcart.carts);
+    //console.log("ITEMS: ", items);
+    const total_amount = items.reduce((total, item) => total + item.price * item.count, 0);
+
     return (
         <>
             <div className="col-lg-6 col-md-6">
-                <h3>Siparişiniz</h3>
+                <h3>Orders</h3>
                 <div className="order_table table-responsive">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Ürün</th>
-                                <th>Toplam</th>
-                            </tr>
+                        <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td> green Dress For Woman <strong> × 1</strong></td>
-                                <td> 100.00 TL</td>
+                        {items.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.name} <strong> × {item.quantity}</strong></td>
+                                <td>{item.price}</td>
                             </tr>
-                            <tr>
-                                <td> V-Neck Dress <strong> × 1</strong></td>
-                                <td> 50.00 TL</td>
-                            </tr>
-                          
+                        ))}
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th>Alt Toplam</th>
-                                <td>150.00 TL</td>
-                            </tr>
-                            <tr>
-                                <th>Kargo</th>
-                                <td><strong>15.00 TL</strong></td>
-                            </tr>
-                            <tr className="order_total">
-                                <th>Sipariş Toplamı </th>
-                                <td><strong>165.00 TL</strong></td>
-                            </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>{total_amount}</td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>

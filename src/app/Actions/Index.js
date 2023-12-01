@@ -377,3 +377,59 @@ export const removeFromMyBasket = createAsyncThunk('cart/removeFromMyBasket', as
     }
   }
 );
+
+export const checkout = createAsyncThunk('cart/checkout', async ({ user, cardDetails, cartHeaderId }) => {
+
+  let checkoutHeaderDto = {
+    CartHeaderId : cartHeaderId,
+    UserId: user.user_id,
+    CouponCode: "",
+    OrderTotal: 0,
+    DiscountTotal: 0,
+    FirstName: "",
+    LastName: "",
+    PickupDateTime: new Date(),
+    Phone: "",
+    Email: "",
+    CardNumber: cardDetails.CardNumber,
+    CVV: cardDetails.CVV,
+    ExpiryMonth: cardDetails.ExpiryMonth,
+    ExpiryYear: cardDetails.ExpiryYear,
+    CartTotalItems: 0,
+    CartDetails: null
+  }
+  
+  //console.log("checkoutHeader ", checkoutHeaderDto);
+
+  const headers = {
+    'Authorization': `Bearer ${user.access_token}`,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'POST',
+    'Access-Control-Max-Age': '1800'
+  };
+
+  try {
+    const response = await axios.post(
+      'https://localhost:5050/api/cartc',
+      checkoutHeaderDto,
+      { headers }
+    );
+
+    const responseData = response.data;
+    
+    //console.log("RESPONSE: ", responseData);
+
+    if (responseData.isSuccess) {
+      return responseData.result;
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+      //return { isSuccess: false, error: 'Failed to complete the order. Please try again.' };
+    }
+  } catch (error) {
+    throw new Error('Something went wrong. Please try again.');
+    //return { isSuccess: false, error: 'Failed to complete the order. Please try again.' };
+  }
+});

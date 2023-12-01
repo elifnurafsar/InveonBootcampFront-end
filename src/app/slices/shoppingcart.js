@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductData } from "../data/ProductData";
 import Swal from "sweetalert2";
-import { getMyBasket, addToMyBasket, removeFromMyBasket } from "../Actions/Index"
+import { getMyBasket, addToMyBasket, removeFromMyBasket, checkout } from "../Actions/Index"
 
 
 const shoppingcartSlice = createSlice({
     name: 'cart',
     initialState: {
         carts: [],
+        error: "p"
         //single: ProductData[0],  // her bir ürün temsil eder
     },
     reducers: {
@@ -69,6 +70,18 @@ const shoppingcartSlice = createSlice({
             .addCase(removeFromMyBasket.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            .addCase(checkout.pending, (state) => {
+                state.loading = true;
+                state.error = "p";
+            })
+            .addCase(checkout.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = "false";
+            })
+            .addCase(checkout.rejected, (state, action) => {
+                state.loading = false;
+                state.error = "rejected";
             });
     },
 })

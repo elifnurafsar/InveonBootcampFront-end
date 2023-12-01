@@ -20,11 +20,12 @@ const Cart = loadable(() => pMinDelay(import('./page/cart/index'), 250), { fallb
 const Favorites = loadable(() => pMinDelay(import('./page/Wishlist/index'), 250), { fallback: <Loader /> });
 const ShopLeftSideBar = loadable(() => pMinDelay(import('./page/shop/shop-left-sidebar'), 250), { fallback: <Loader /> });
 const OrderComplete = loadable(() => pMinDelay(import('./page/order/order-complete'), 250), { fallback: <Loader /> });
-const CheckoutTwos = loadable(() => pMinDelay(import('./page/checkout/checkout-two'), 250), { fallback: <Loader /> });
+const CheckoutTwo = loadable(() => pMinDelay(import('./page/checkout/checkout-two'), 250), { fallback: <Loader /> });
 const CustomerOrder = loadable(() => pMinDelay(import('./page/my-account/customer-order'), 250), { fallback: <Loader /> });
 const CustomerAddress = loadable(() => pMinDelay(import('./page/my-account/customer-address'), 250), { fallback: <Loader /> });
 const CustomerAccountDetails = loadable(() => pMinDelay(import('./page/my-account/customer-account-details'), 250), { fallback: <Loader /> });
 const CallbackPage = loadable(() => pMinDelay(import('./components/CallbackPage'), 250), { fallback: <Loader /> });
+const OrderMessage = loadable(() => pMinDelay(import('./page/checkout/OrderMessage'), 250), { fallback: <Loader /> });
 
 function App() {
   const dispatch = useDispatch();
@@ -61,11 +62,12 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactTwo />} />
           <Route path='/order-complete' element={<OrderComplete />} />
-          <Route path="/checkout-two" element={<CheckoutTwos />} />
+          <Route path="/checkout-two" element={<CheckoutTwo />} />
           <Route path="/my-account/customer-order" element={<CustomerOrder />} />
           <Route path="/my-account/customer-address" element={<CustomerAddress />} />
           <Route path="/my-account/customer-account-details" element={<CustomerAccountDetails />} />
           <Route path="/shop/shop-left-sidebar" element={<ShopLeftSideBar />} />
+          <Route path="/after-checkout" element={<OrderMessage />} />
         </Routes>
       </BrowserRouter>
     </div>
