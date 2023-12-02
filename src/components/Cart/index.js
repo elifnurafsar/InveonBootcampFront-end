@@ -79,9 +79,9 @@ const CartArea = () => {
                                                         </td>
                                                         <td className="product-price">{data.price}.00 TL</td>
                                                         <td className="product_quantity">
-                                                            <input min="1" max="100" type="number" onChange={e => cartValUpdate(e.currentTarget.value, data.productId)} defaultValue={data.quantity || 1} />
+                                                            <input min="1" max="100" type="number" onChange={e => cartValUpdate(e.currentTarget.value, data.productId)} defaultValue={data.count} />
                                                         </td>
-                                                        <td className="product_total">{data.price * (data.quantity || 1)}.00 TL</td>
+                                                        <td className="product_total">{data.price * (data.count || 1)}.00 TL</td>
                                                     </tr>
                                                 ))
 

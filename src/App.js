@@ -26,6 +26,8 @@ const CustomerAddress = loadable(() => pMinDelay(import('./page/my-account/custo
 const CustomerAccountDetails = loadable(() => pMinDelay(import('./page/my-account/customer-account-details'), 250), { fallback: <Loader /> });
 const CallbackPage = loadable(() => pMinDelay(import('./components/CallbackPage'), 250), { fallback: <Loader /> });
 const OrderMessage = loadable(() => pMinDelay(import('./page/checkout/OrderMessage'), 250), { fallback: <Loader /> });
+const OrderDetailsPage = loadable(() => pMinDelay(import('./page/order/OrderDetailsPage'), 250), { fallback: <Loader /> });
+
 
 function App() {
   const dispatch = useDispatch();
@@ -68,6 +70,7 @@ function App() {
           <Route path="/my-account/customer-account-details" element={<CustomerAccountDetails />} />
           <Route path="/shop/shop-left-sidebar" element={<ShopLeftSideBar />} />
           <Route path="/after-checkout" element={<OrderMessage />} />
+          <Route path="/order-details/:orderHeaderId" element={<OrderDetailsPage />} />
         </Routes>
       </BrowserRouter>
     </div>

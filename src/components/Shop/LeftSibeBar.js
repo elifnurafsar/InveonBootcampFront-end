@@ -11,9 +11,9 @@ const LeftSideBar = () => {
     let allData = [...useSelector((state) => state.products.products)];
     const healthy = useSelector((state) => state.products.healthy);
     const snacks = useSelector((state) => state.products.snacks);
-    const dessert = useSelector((state) => state.products.dessert);
+    const dessert = useSelector((state) => state.products.desserts);
     const gluten_free = useSelector((state) => state.products.gluten_free);
-    const italian = useSelector((state) => state.products.italian);
+    const italian = useSelector((state) => state.products.italia);
     const seasonal = useSelector((state) => state.products.seasonal);
     let lngth = Math.ceil(allData.length/10);
     let [maxPage, setMaxPage] = useState(lngth);

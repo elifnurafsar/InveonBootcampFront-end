@@ -152,7 +152,6 @@ export const toggleFavorite = createAsyncThunk('favorites/toggleFavorite', async
           return null; // Item removed successfully
         }
       } else {
-        // Handle the case where the item already exists
         if (responseData.errorMessages && responseData.errorMessages.length > 0) {
           // Show a warning message when the item already exists
           Swal.fire({
@@ -168,7 +167,7 @@ export const toggleFavorite = createAsyncThunk('favorites/toggleFavorite', async
             text: 'Something went wrong. Please try again.',
           });
         }
-        return null; // Handle the case according to your application logic
+        return null; 
       }
     } catch (error) {
       console.error('API Error:', error);
@@ -431,5 +430,40 @@ export const checkout = createAsyncThunk('cart/checkout', async ({ user, cardDet
   } catch (error) {
     throw new Error('Something went wrong. Please try again.');
     //return { isSuccess: false, error: 'Failed to complete the order. Please try again.' };
+  }
+});
+
+export const getMyPurchases = createAsyncThunk('orders/getMyPurchases', async (user) => {
+  const headers = {
+    'Authorization': `Bearer ${user.user.access_token}`,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+    'Access-Control-Max-Age': '1800',
+  };
+  try {
+    const response = await axios.get(`https://localhost:5050/api/orders/${user.user.user_id}`, { headers });
+
+    const responseData = response.data;
+
+    if (responseData.isSuccess) {
+      return responseData.result; 
+    } else {
+      // Show a generic error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      return []; 
+    }
+  } catch (error) {
+    console.error('API Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Something went wrong. Please try again.',
+    });
   }
 });

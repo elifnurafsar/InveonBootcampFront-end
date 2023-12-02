@@ -23,7 +23,7 @@ const ProductDetailsTwo = () => {
 
     let product = useSelector((state) => state.products.single);
     let user = useSelector((state) => state.user.user);
-
+    const [count, setCount] = useState(1)
     // Add to cart
     const addToCart = async(productId) => {
         //console.log("Sepete Ekle Methodu: ", productId);
@@ -33,7 +33,7 @@ const ProductDetailsTwo = () => {
                     addToMyBasket({
                         user,
                         product,
-                        count: 1
+                        count: count
                     })
                 );
             }
@@ -85,8 +85,6 @@ const ProductDetailsTwo = () => {
         }
     }
 
-    // Quenty Inc Dec
-    const [count, setCount] = useState(1)
     const incNum = () => {
         setCount(count + 1)
     }

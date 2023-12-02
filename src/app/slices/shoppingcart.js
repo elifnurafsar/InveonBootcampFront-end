@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProductData } from "../data/ProductData";
-import Swal from "sweetalert2";
 import { getMyBasket, addToMyBasket, removeFromMyBasket, checkout } from "../Actions/Index"
 
 

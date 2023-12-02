@@ -9017,3 +9017,14 @@ table {
     transform: scale(0.8);
 }
   
+.order_item{
+    font-size: 12px;
+    font-family: "Montserrat", sans-serif;
+    border-top: 2px dashed #E8E8E8;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.order_comp{
+    text-align: center;
+}
