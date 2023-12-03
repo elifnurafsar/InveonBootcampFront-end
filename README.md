@@ -1,4 +1,8 @@
 # React Restaurant Website
+
+> [!NOTE]  
+> Sunum videosu: https://youtu.be/zlxpQB0nb5s Proje hakkında daha fazla bilgiye https://github.com/elifnurafsar/InveonBootcamp.git repositor'den ulaşabilirsiniz.
+
 ![login](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/2e18c04b-8983-421e-b2a2-3f838c59904e)
 ![main1](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/431ae1f4-0aef-432b-a8ec-36c8574b0b67)
 ![main2](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/351dfffd-b2a4-44e4-8241-8fe6acbcb7b6)
