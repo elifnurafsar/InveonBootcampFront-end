@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch }  from "react-redux";
 import {Link} from "react-router-dom";
-import {AiOutlineHeart} from 'react-icons/ai';
+import {AiOutlineHeart, AiTwotoneHeart} from 'react-icons/ai';
 import { toggleFavorite, addToMyBasket, getProductByID } from "../../../app/Actions/Index";
 import Swal from "sweetalert2";
 
@@ -9,14 +9,26 @@ import Swal from "sweetalert2";
 const ProductCard = (props) => {
     let dispatch=  useDispatch();
     let user = useSelector((state) => state.user.user);
+    let favorites = useSelector((state) => state.products.favorites);
+    const [isFav, setIsFav] = useState(false);
+
     useEffect(() => {
-        dispatch(getProductByID(props.data.productId));
+        if(favorites!= null && favorites.length > 0){
+            let isProductInFavorites = favorites.some((product) => product.productId === props.data.productId);
+
+            if (isProductInFavorites) {
+                setIsFav(true);
+                console.log("Product is in favorites");
+            } else {
+                setIsFav(false);
+                console.log("Product is not in favorites");
+            }
+        }
     }, []);
 
-    let product = useSelector((state) => state.products.single);
-
     const addToCart = async(productId) => {
-        console.log("Sepete Ekle Methodu: ", productId);
+        let product = props.data;
+        console.log("Sepete Ekle Methodu: ", productId, " product: ", props.data);
         if(user.access_token){
             try{
                 dispatch(
@@ -91,7 +103,8 @@ const ProductCard = (props) => {
                 </span>
                 <div className="actions">
                     <a href="#!" className="action wishlist" title="Favorilere Ekle"
-                        onClick={() => addToFav(props.data.productId)} ><AiOutlineHeart />
+                        onClick={() => addToFav(props.data.productId)} >
+                            {isFav ? (<AiTwotoneHeart color="red" />) : ( <AiOutlineHeart />)}
                     </a>
                 </div>
                 <button type="button" className="add-to-cart offcanvas-toggle" onClick={() => addToCart(props.data.productId)}>

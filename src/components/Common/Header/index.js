@@ -10,9 +10,11 @@ import logoWhite from '../../../assets/img/logo-white.png'
 import mylogo from '../../../assets/img/logo2.svg'
 import svgsearch from '../../../assets/img/svg/search.svg'
 import Swal from 'sweetalert2'
+
 const Header = () => {
-    let carts = useSelector((state) => state.products.carts);
+    let carts = useSelector((state) => state.shoppingcart.carts);
     let favorites = useSelector((state) => state.products.favorites);
+    let user = useSelector((state) => state.user.user);
     const [click, setClick] = useState(false);
     const history = useNavigate();
     let dispatch = useDispatch();
@@ -40,6 +42,7 @@ const Header = () => {
         }
         setClick(!click);
     }
+
     const handleWish = () => {
         if (click) {
             document.querySelector("#offcanvas-wishlish").style = ("transform: translateX(100%);")
@@ -48,6 +51,7 @@ const Header = () => {
         }
         setClick(!click);
     }
+
     const handleSearch = () => {
         if (click) {
             document.querySelector("#search").style = ("transform: translate(-100%, 0); opacity: 0")
@@ -60,6 +64,7 @@ const Header = () => {
 
         setClick(!click);
     }
+
     const handleabout = () => {
         if (click) {
             document.querySelector("#offcanvas-about").style = ("transform: translateX(100%);")
@@ -68,6 +73,7 @@ const Header = () => {
         }
         setClick(!click);
     }
+
     const handlemenu = () => {
         if (click) {
             document.querySelector("#mobile-menu-offcanvas").style = ("transform: translateX(100%);")
@@ -76,6 +82,7 @@ const Header = () => {
         }
         setClick(!click);
     }
+
     return (
         <div>
             <header className="header-section d-none d-xl-block">
@@ -89,52 +96,82 @@ const Header = () => {
                                             <Link to="/"><img  style={{ width: "70px", height: "70px"}}  src={mylogo} alt="my basket"/></Link>
                                         </div>
                                     </div>
-                                    {/* Burası menüyü oluşturan bölüm */}
-                                    <div className="main-menu menu-color--black menu-hover-color--golden d-none d-xl-block">
-                                        <nav>
-                                            <ul>
-                                                {/* MenuData nın içindeki her bir json objesi için li oluşturulur */}
-                                                {MenuData.map((item, index) => (
-                                                    <NaveItems item={item} key={index} />
-                                                ))}
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <ul className="header-action-link action-color--black action-hover-color--golden">
-                                        <li>
-                                            {favorites.length
-                                                ? <a href="#offcanvas-wishlish" className="offcanvas-toggle"
-                                                    onClick={handleWish}><i className="fa fa-heart">
-                                                    </i><span className="item-count">{favorites.length}</span></a>
-                                                : <a href="#offcanvas-wishlish" className="offcanvas-toggle">
-                                                    <i className="fa fa-heart">
-                                                    </i><span className="item-count">{favorites.length}</span>
+                                    {user != null  && user.role == "Admin" ?
+                                    (
+                                        <>
+                                            <div className="main-menu menu-color--black menu-hover-color--golden d-none d-xl-block">
+                                                <nav>
+                                                    <ul>
+                                                        {/* MenuData nın içindeki her bir json objesi için li oluşturulur */}
+                                                        {MenuData.map((item, index) => (
+                                                            <NaveItems item={item} key={index} />
+                                                        ))}
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                            <div className="mobile-right-side">
+                                                <ul className="right_list_fix">
+                                                    <li>
+                                                        <Link to="/chat"><i className="fa fa-comments"></i>Chat - Help</Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/panel"><i className="fa fa-tachometer"></i>Panel</Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/admin-add-product"><i className="fa fa-plus-circle"></i>Add</Link>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </>
+                                    ):(
+                                        <>
+                                        <div className="main-menu menu-color--black menu-hover-color--golden d-none d-xl-block">
+                                            <nav>
+                                                <ul>
+                                                    {/* MenuData nın içindeki her bir json objesi için li oluşturulur */}
+                                                    {MenuData.map((item, index) => (
+                                                        <NaveItems item={item} key={index} />
+                                                    ))}
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        <ul className="header-action-link action-color--black action-hover-color--golden">
+                                            <li>
+                                                {favorites.length
+                                                    ? <a href="#offcanvas-wishlish" className="offcanvas-toggle"
+                                                        onClick={handleWish}><i className="fa fa-heart">
+                                                        </i><span className="item-count">{favorites.length}</span></a>
+                                                    : <a href="#offcanvas-wishlish" className="offcanvas-toggle">
+                                                        <i className="fa fa-heart">
+                                                        </i><span className="item-count">{favorites.length}</span>
+                                                    </a>
+                                                }
+                                            </li>
+                                            <li>
+                                                {carts.length
+                                                    ? <a href="#!" className="offcanvas-toggle"
+                                                        onClick={handleClick}>
+                                                        <i className="fa fa-shopping-bag"></i>
+                                                        <span className="item-count">{carts.length}</span></a>
+                                                    : <a href="#!" className="offcanvas-toggle">
+                                                        <i className="fa fa-shopping-bag">
+                                                        </i><span className="item-count">{carts.length}</span></a>
+                                                }
+                                            </li>
+                                            <li>
+                                                <a href="#search" className="search_width" onClick={handleSearch} >
+                                                    <img src={svgsearch} alt="img" />
                                                 </a>
-                                            }
-                                        </li>
-                                        <li>
-                                            {carts.length
-                                                ? <a href="#!" className="offcanvas-toggle"
-                                                    onClick={handleClick}>
-                                                    <i className="fa fa-shopping-bag"></i>
-                                                    <span className="item-count">{carts.length}</span></a>
-                                                : <a href="#!" className="offcanvas-toggle">
-                                                    <i className="fa fa-shopping-bag">
-                                                    </i><span className="item-count">{carts.length}</span></a>
-                                            }
-                                        </li>
-                                        <li>
-                                            <a href="#search" className="search_width" onClick={handleSearch} >
-                                                <img src={svgsearch} alt="img" />
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#offcanvas-about" className="offacnvas offside-about 
-                                            offcanvas-toggle" onClick={handleabout}>
-                                                <i className="fa fa-bars"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            </li>
+                                            <li>
+                                                <a href="#offcanvas-about" className="offacnvas offside-about 
+                                                offcanvas-toggle" onClick={handleabout}>
+                                                    <i className="fa fa-bars"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -142,66 +179,107 @@ const Header = () => {
                 </div>
             </header>
             {/* Ekran küçüldüğünde  sticky menu devreye girer başladı  */}
-            <div className="mobile-header sticky-header sticky-color--golden 
+            {user != null  && user.role == "Admin" ?
+            (
+                <div className="mobile-header sticky-header sticky-color--golden 
             mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-12 d-flex align-items-center justify-content-between">
-                            {/* Burası ekran  logo  devreye girer  */}
-                            <div className="mobile-header-left">
-                                <ul className="mobile-menu-logo">
-                                    <li>
-                                        <Link to="/">
-                                            <div className="logo">
-                                                <img  style={{ width: "70px", height: "70px"}}  src={mylogo} alt="my basket"/>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            {/* Burası ekran  küçüldüğünde devreye girer  */}
-                            <div className="mobile-right-side">
-                                <ul className="header-action-link action-color--black 
-                                action-hover-color--golden">
-                                    <li>
-                                        <a href="#!" className="search_width" onClick={handleSearch}>
-                                            <img src={svgsearch} alt="img" />
-                                        </a>
-                                    </li>
-                                    <li>
-                                        {favorites.length
-                                            ? <a href="#offcanvas-wishlish" className="offcanvas-toggle"
-                                                onClick={handleWish}><i className="fa fa-heart"></i>
-                                                <span className="item-count">{favorites.length}</span></a>
-                                            : <a href="#offcanvas-wishlish" className="offcanvas-toggle">
-                                                <i className="fa fa-heart"></i><span className="item-count">
-                                                    {favorites.length}</span></a>
-                                        }
-                                    </li>
-                                    <li>
-                                        {carts.length
-                                            ? <a href="#!" className="offcanvas-toggle" onClick={handleClick}>
-                                                <i className="fa fa-shopping-bag"></i>
-                                                <span className="item-count">{carts.length}</span></a>
-                                            : <a href="#!" className="offcanvas-toggle">
-                                                <i className="fa fa-shopping-bag">
-                                                </i><span className="item-count">{carts.length}</span></a>
-                                        }
-                                    </li>
-                                    <li>
-                                        <a href="#!" className="offcanvas-toggle offside-menu"
-                                            onClick={handlemenu}>
-                                            <i className="fa fa-bars"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-12 d-flex align-items-center justify-content-between">
+                                {/* Burası ekran  logo  devreye girer  */}
+                                <div className="mobile-header-left">
+                                    <ul className="mobile-menu-logo">
+                                        <li>
+                                            <Link to="/">
+                                                <div className="logo">
+                                                    <img  style={{ width: "70px", height: "70px"}}  src={mylogo} alt="logo"/>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {/* Burası ekran  küçüldüğünde devreye girer  */}
+                                <div className="mobile-right-side">
+                                    <ul className="right_list_fix">
+                                        <li>
+                                            <Link to="/chat"><i className="fa fa-comments"></i>Chat - Help</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/panel"><i className="fa fa-tachometer"></i>Panel</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/admin-add-product"><i className="fa fa-plus-circle"></i>Add</Link>
+                                        </li>
+                                    </ul>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+                ):
+                (
+                    <div className="mobile-header sticky-header sticky-color--golden 
+                mobile-header-bg-color--golden section-fluid d-lg-block d-xl-none">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-12 d-flex align-items-center justify-content-between">
+                                    {/* Burası ekran  logo  devreye girer  */}
+                                    <div className="mobile-header-left">
+                                        <ul className="mobile-menu-logo">
+                                            <li>
+                                                <Link to="/">
+                                                    <div className="logo">
+                                                        <img  style={{ width: "70px", height: "70px"}}  src={mylogo} alt="my basket"/>
+                                                    </div>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {/* Burası ekran  küçüldüğünde devreye girer  */}
+                                    <div className="mobile-right-side">
+                                        <ul className="header-action-link action-color--black 
+                                        action-hover-color--golden">
+                                            <li>
+                                                <a href="#!" className="search_width" onClick={handleSearch}>
+                                                    <img src={svgsearch} alt="img" />
+                                                </a>
+                                            </li>
+                                            <li>
+                                                {favorites.length
+                                                    ? <a href="#offcanvas-wishlish" className="offcanvas-toggle"
+                                                        onClick={handleWish}><i className="fa fa-heart"></i>
+                                                        <span className="item-count">{favorites.length}</span></a>
+                                                    : <a href="#offcanvas-wishlish" className="offcanvas-toggle">
+                                                        <i className="fa fa-heart"></i><span className="item-count">
+                                                            {favorites.length}</span></a>
+                                                }
+                                            </li>
+                                            <li>
+                                                {carts.length
+                                                    ? <a href="#!" className="offcanvas-toggle" onClick={handleClick}>
+                                                        <i className="fa fa-shopping-bag"></i>
+                                                        <span className="item-count">{carts.length}</span></a>
+                                                    : <a href="#!" className="offcanvas-toggle">
+                                                        <i className="fa fa-shopping-bag">
+                                                        </i><span className="item-count">{carts.length}</span></a>
+                                                }
+                                            </li>
+                                            <li>
+                                                <a href="#!" className="offcanvas-toggle offside-menu"
+                                                    onClick={handlemenu}>
+                                                    <i className="fa fa-bars"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
             {/* Ekran küçüldüğünde  sticky menu devreye girer bitti */}
             {/* Burası ekran  küçüldüğünde hamburger menü  devreye girer  */}
             <div id="mobile-menu-offcanvas"
@@ -220,7 +298,7 @@ const Header = () => {
                         </div>
                         <address className="address">
                             <span>Addres: Beylikdüzü / İstanbul</span>
-                            <span>Bizi Ulaşın: 0123456789, 0123456789</span>
+                            <span>Bize Ulaşın: 0123456789, 0123456789</span>
                             <span>Email: ibr@ibr.com</span>
                         </address>
                         <ul className="social-link">
@@ -297,17 +375,17 @@ const Header = () => {
                         {carts.map((data, index) => (
                             <li className="offcanvas-wishlist-item-single" key={index}>
                                 <div className="offcanvas-wishlist-item-block">
-                                    <Link to={`/product-details-two/${data.id}`}
+                                    <Link to={`/product-details-two/${data.productId}`}
                                         className="offcanvas-wishlist-item-image-link" >
-                                        <img src={data.img} alt="img"
+                                        <img src={data.imageUrl} alt="img"
                                             className="offcanvas-wishlist-image" />
                                     </Link>
                                     <div className="offcanvas-wishlist-item-content">
-                                        <Link to={`/product-details-two/${data.id}`}
-                                            className="offcanvas-wishlist-item-link">{data.title}</Link>
+                                        <Link to={`/product-details-two/${data.productId}`}
+                                            className="offcanvas-wishlist-item-link">{data.name}</Link>
                                         <div className="offcanvas-wishlist-item-details">
                                             <span className="offcanvas-wishlist-item-details-quantity">
-                                                {data.quantity || 1} x
+                                                {data.count} x
                                             </span>
                                             <span className="offcanvas-wishlist-item-details-price">
                                                 {data.price} TL</span>
@@ -353,14 +431,14 @@ const Header = () => {
                         {favorites.map((data, index) => (
                             <li className="offcanvas-wishlist-item-single" key={index}>
                                 <div className="offcanvas-wishlist-item-block">
-                                    <Link to={`/product-details-one/${data.id}`}
+                                    <Link to={`/product-details-one/${data.productId}`}
                                         className="offcanvas-wishlist-item-image-link" >
-                                        <img src={data.img} alt="img"
+                                        <img src={data.imageUrl} alt="img"
                                             className="offcanvas-wishlist-image" />
                                     </Link>
                                     <div className="offcanvas-wishlist-item-content">
-                                        <Link to={`/product-details-one/${data.id}`}
-                                            className="offcanvas-wishlist-item-link">{data.title}</Link>
+                                        <Link to={`/product-details-one/${data.productId}`}
+                                            className="offcanvas-wishlist-item-link">{data.name}</Link>
                                         <div className="offcanvas-wishlist-item-details">
                                             <span className="offcanvas-wishlist-item-details-quantity">1 x
                                             </span>
@@ -371,7 +449,7 @@ const Header = () => {
                                 </div>
                                 <div className="offcanvas-wishlist-item-delete text-right">
                                     <a href="#!" className="offcanvas-wishlist-item-delete"
-                                        onClick={() => rmFavProduct(data.id)}><i className="fa fa-trash"></i></a>
+                                        onClick={() => rmFavProduct(data.productId)}><i className="fa fa-trash"></i></a>
                                 </div>
                             </li>
                         ))}

@@ -16,7 +16,8 @@ const CallbackPage = () => {
       email: user.profile.preferred_username,
       id_token: user.id_token,
       access_token: user.access_token,
-      user_id: user.profile.sub
+      user_id: user.profile.sub,
+      role: user.profile.role
     }
     dispatch({ type: "user/login", payload: { user: userProfile, status: true } })
     navigate(redirectPath);

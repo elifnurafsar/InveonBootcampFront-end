@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import userManager from "./userManager"
 import axios from 'axios';
-import { useDispatch } from "react-redux";
+import { useDispatch}  from "react-redux";
+import { getAllProducts, getProductsByCategory, getUserFavorites, getAllOrders } from "./app/Actions/Index";
 import { useEffect } from "react";
 import loadable from "./components/Common/loadable";
 import pMinDelay from "p-min-delay";
@@ -27,25 +29,61 @@ const CustomerAccountDetails = loadable(() => pMinDelay(import('./page/my-accoun
 const CallbackPage = loadable(() => pMinDelay(import('./components/CallbackPage'), 250), { fallback: <Loader /> });
 const OrderMessage = loadable(() => pMinDelay(import('./page/checkout/OrderMessage'), 250), { fallback: <Loader /> });
 const OrderDetailsPage = loadable(() => pMinDelay(import('./page/order/OrderDetailsPage'), 250), { fallback: <Loader /> });
-
+const ChatPage = loadable(() => pMinDelay(import('./page/chat/ChatPage'), 250), { fallback: <Loader /> });
+const AdminPanel = loadable(() => pMinDelay(import('./page/admin/AdminPanel'), 250), { fallback: <Loader /> });
+const AdminAddProduct = loadable(() => pMinDelay(import('./page/admin/AdminAddProduct'), 250), { fallback: <Loader /> });
 
 function App() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     userManager.getUser().then(user => {
       if (user && !user.expired) {
+        if(user.profile.role == "Admin"){
+          dispatch(
+              getAllOrders({
+                  user
+              })
+          );
+        }
+        else if(user.profile.role == "Customer"){
+          dispatch(
+            getUserFavorites({
+                  user
+              })
+          );
+        }
         const userProfile = {
           name: user.profile.name,
           role: user.profile.role,
           email: user.profile.preferred_username,
           id_token: user.id_token,
           access_token: user.access_token,
-          user_id: user.profile.sub
+          user_id: user.profile.sub,
+          role: user.profile.role
         }
         dispatch({ type: "user/login", payload: { user: userProfile, status: true } })
       }
     });
+    dispatch(getAllProducts());
+
+    // Dispatch the action to fetch products by category for 'healthy'
+    dispatch(getProductsByCategory('healthy'));
+
+    // Dispatch the action to fetch products by category for 'snacks'
+    dispatch(getProductsByCategory('snack'));
+
+    // Dispatch the action to fetch products by category for 'dessert'
+    dispatch(getProductsByCategory('dessert'));
+
+    // Dispatch the action to fetch products by category for 'gluten_free'
+    dispatch(getProductsByCategory('gluten_free'));
+
+    // Dispatch the action to fetch products by category for 'italian'
+    dispatch(getProductsByCategory('italian'));
+
+    // Dispatch the action to fetch products by category for 'seasonal'
+    dispatch(getProductsByCategory('seasonal'));
+
   }, []);
 
 
@@ -69,8 +107,11 @@ function App() {
           <Route path="/my-account/customer-address" element={<CustomerAddress />} />
           <Route path="/my-account/customer-account-details" element={<CustomerAccountDetails />} />
           <Route path="/shop/shop-left-sidebar" element={<ShopLeftSideBar />} />
+          <Route path="/panel" element={<AdminPanel />} />
           <Route path="/after-checkout" element={<OrderMessage />} />
           <Route path="/order-details/:orderHeaderId" element={<OrderDetailsPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/admin-add-product" element={<AdminAddProduct />} />
         </Routes>
       </BrowserRouter>
     </div>

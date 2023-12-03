@@ -10,7 +10,7 @@ const OrderDetailsPage = () => {
     return (
         <>
             <Header />
-            <Banner title="Siparişiniz Alındı" />
+            <Banner title="Order Details" />
             <OrderDetais selectedOrderId={orderHeaderId} />
             <Footer />
         </>

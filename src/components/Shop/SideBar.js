@@ -5,21 +5,38 @@ import search from '../../assets/img/svg/search.svg'
 
 const SideBar = (props) => {
 
+    const [queryName, setqueryName] = useState("")
+    const [queryPrice, setqueryPrice] = useState(0)
+    const [queryCategory, setqueryCategory] = useState("all")
+
     useEffect(() => {
         document.querySelectorAll("input[type='radio']").forEach((input) => {
             input.addEventListener('change', function () {
-                props.filterEvent(input.value)
+                setqueryCategory(input.value)
+                props.filterEvent(0, input.value, 0, false)
             });
         });
 
-        document.querySelector("input[type='range']").addEventListener('change', function (e) {
-            setPrice(e.target.value);
-            props.filterEvent(1);
+        document.querySelector("input[type='number']").addEventListener('change', function (e) {
+            setqueryPrice(e.target.value);
+            props.filterEvent(queryName, queryCategory, e.target.value, false);
         });
 
     }, [props])
 
-    const [price, setPrice] = useState(100)
+    const setDefault = () =>{
+        setqueryName("");
+        setqueryCategory("all");
+        setqueryPrice(0)
+        props.filterEvent("", "", 0, true)
+    }
+
+    const setMaxPrice = (e) =>{
+        e.preventDefault();
+        console.log(e.target.value)
+        setqueryPrice(e.target.value)
+        props.filterEvent(queryName, queryCategory, e.target.value, false);
+    }
 
     return (
         <>
@@ -27,8 +44,7 @@ const SideBar = (props) => {
                 <div className="shop_sidebar_wrapper">
                     <div className="shop_Search">
                         <form>
-
-                            <input type="text" className="form-control" placeholder="Ara..." onKeyUp={(e) => { props.filterEvent(e) }} />
+                            <input type="text" className="form-control" placeholder="Ara..." onChange={(e)=>props.filterEvent(e.target.value, queryCategory, queryPrice, false)}/>
                             <button><img src={search} alt="img" /></button>
                         </form>
                     </div>
@@ -44,7 +60,7 @@ const SideBar = (props) => {
                                 <span className="checkmark"></span>
                             </label>
                             <label className="custom_boxed">Burgerler
-                                <input type="radio" name="radio" value="snacks" />
+                                <input type="radio" name="radio" value="snack" />
                                 <span className="checkmark"></span>
                             </label>
                             <label className="custom_boxed">Gluten - Free
@@ -69,9 +85,13 @@ const SideBar = (props) => {
                     <div className="shop_sidebar_boxed">
                         <h4>Fiyat</h4>
                         <div className="price_filter">
-                            <input type="range" min="10" max="200" defaultValue={price} className="form-control-range" id="formControlRange" />
-                            <div className="price_slider_amount mt-2">
-                                <span>Fiyat : {price}</span>
+                            <div style={{flexDirection: "row"}}>
+                                <div style={{flex:1}}>
+                                    <label style={{justifyContent: 'flex-end'}}> 
+                                        Max Fiyat:
+                                        <input type="number" name="price_max" onChange={(e)=>setMaxPrice(e)}/>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -79,7 +99,7 @@ const SideBar = (props) => {
                     <div className="shop_sidebar_boxed">
                         <form>
                             <div className="clear_button">
-                                <button className="theme-btn-one btn_sm btn-black-overlay" type="button" onClick={() => { props.filterEvent("all") }}>Filtreyi Temizle</button>
+                                <button className="theme-btn-one btn_sm btn-black-overlay" type="button" onClick={() =>  setDefault() }>Filtreyi Temizle</button>
                             </div>
                         </form>
                     </div>

@@ -18,7 +18,7 @@ const OrderDetails = ({ selectedOrderId }) => {
 
     return (
         <>
-           <div className="myaccount-content">
+           <div className="orderdetails-content">
                 <div className="order_comp">
                 <img style={{ width: "40px", height: "40px"}} src={ticket} alt="An error occurred!"/>
                 <h2 className="title" style={{ color: '#ff4500' }}><strong>Order Details</strong></h2>
@@ -46,13 +46,13 @@ const OrderDetails = ({ selectedOrderId }) => {
                         {selectedOrder.orderDetails.map((orderDetail) => (
                         <li className="order_item" key={orderDetail.OrderDetailsId}>
                             <div>
-                            <strong style={{ color: '#ffa07a' }}>Product:</strong> {orderDetail.productName}
+                                <strong style={{ color: '#ffa07a' }}>Product:</strong> {orderDetail.productName}
                             </div>
                             <div>
-                            <strong style={{ color: '#ffa07a' }}>Count:</strong> {orderDetail.count}
+                                <strong style={{ color: '#ffa07a' }}>Count:</strong> {orderDetail.count}
                             </div>
                             <div>
-                            <strong style={{ color: '#ffa07a' }}>Price:</strong> {orderDetail.price}
+                                <strong style={{ color: '#ffa07a' }}>Price:</strong> {orderDetail.price} TL
                             </div>
                         </li>
                         ))}

@@ -4,7 +4,7 @@ import TotalCart from './TotalCart'
 import { Link } from 'react-router-dom'
 import img from '../../assets/img/common/empty-cart.png'
 import { useDispatch, useSelector } from "react-redux";
-import { getMyBasket, removeFromMyBasket } from "../../app/Actions/Index";
+import { getMyBasket, removeFromMyBasket, removeAllFromMyBasket } from "../../app/Actions/Index";
 
 const CartArea = () => {
     let dispatch = useDispatch();
@@ -19,7 +19,7 @@ const CartArea = () => {
     }, []);
 
     let carts = useSelector((state) => state.shoppingcart.carts);
-
+    
     // Remove from Cart
     const rmProduct = (cartDetailsId) => {
         //console.log("CD ID: ", cartDetailsId);
@@ -33,7 +33,13 @@ const CartArea = () => {
 
     // Clear
     const clearCarts = () => {
-        dispatch({ type: "products/clearCart" });
+        let cartId = carts[0].CartHeaderId;
+        dispatch(
+            removeAllFromMyBasket({
+                user,
+                cartId
+            })
+        );
     }
     // Value Update
     const cartValUpdate = (val, id) => {
@@ -42,7 +48,7 @@ const CartArea = () => {
 
     return (
         <>
-            {carts && carts.length
+            {carts!=null && carts.length
                 ?
                 <section id="cart_area_one" className="ptb-100">
                     <div className="container">

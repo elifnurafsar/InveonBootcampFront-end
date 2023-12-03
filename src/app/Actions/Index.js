@@ -222,7 +222,6 @@ export const getMyBasket = createAsyncThunk('cart/getMyBasket', async (user) => 
       const response = await axios.get(`https://localhost:5050/api/cart/GetCart/${user.user.user_id}`, { headers });
 
       const responseData = response.data;
-      //console.log("Inside getMyBasket the result is: ", responseData.result);
 
       if (responseData.isSuccess) {
         const cartDetails = responseData.result?.cartDetails.map((detail) => ({
@@ -237,13 +236,13 @@ export const getMyBasket = createAsyncThunk('cart/getMyBasket', async (user) => 
         }));
         return cartDetails;
       } else {
-        // Handle the case where the request is not successful
-        Swal.fire({
+        
+       /* Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Failed to retrieve your basket. Please try again.',
         });
-        
+        */
       }
     } catch (error) {
       // Handle the case where an error occurred
@@ -377,6 +376,37 @@ export const removeFromMyBasket = createAsyncThunk('cart/removeFromMyBasket', as
   }
 );
 
+export const removeAllFromMyBasket = createAsyncThunk('cart/removeAllFromMyBasket', async ({ user, cartId }) => {
+  const headers = {
+    'Authorization': `Bearer ${user.access_token}`,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+    'Access-Control-Max-Age': '1800',
+    'Content-Type': 'application/json'
+  };
+  try {
+    const response = await axios.post(
+      `https://localhost:5050/api/cart/RemoveAllCart`,
+      cartId,
+      { headers }
+    );
+
+    const responseData = response.data;
+
+    if (responseData && responseData.isSuccess) {
+      return responseData.result;
+    } else {
+      throw new Error(responseData.displayMessage || 'API Error');
+    }
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}
+);
+
 export const checkout = createAsyncThunk('cart/checkout', async ({ user, cardDetails, cartHeaderId }) => {
 
   let checkoutHeaderDto = {
@@ -397,8 +427,6 @@ export const checkout = createAsyncThunk('cart/checkout', async ({ user, cardDet
     CartTotalItems: 0,
     CartDetails: null
   }
-  
-  //console.log("checkoutHeader ", checkoutHeaderDto);
 
   const headers = {
     'Authorization': `Bearer ${user.access_token}`,
@@ -465,5 +493,88 @@ export const getMyPurchases = createAsyncThunk('orders/getMyPurchases', async (u
       title: 'Error',
       text: 'Something went wrong. Please try again.',
     });
+  }
+});
+
+
+export const getAllOrders = createAsyncThunk('orders/getAllOrders', async (user) => {
+  const headers = {
+    'Authorization': `Bearer ${user.user.access_token}`,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
+    'Access-Control-Max-Age': '1800',
+  };
+  try {
+    const response = await axios.get(`https://localhost:5050/api/orders`, { headers });
+
+    const responseData = response.data;
+
+    if (responseData.isSuccess) {
+      return responseData.result; 
+    } else {
+      // Show a generic error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      return []; 
+    }
+  } catch (error) {
+    console.error('API Error:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Something went wrong. Please try again.',
+    });
+  }
+});
+
+export const addProduct = createAsyncThunk('product/addProduct', async ({ user, product}) => {
+
+  let productDto = product;
+  const headers = {
+    'Authorization': `Bearer ${user.access_token}`,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'content-type',
+    'Access-Control-Allow-Methods': 'POST',
+    'Access-Control-Max-Age': '1800'
+  };
+
+  try {
+    const response = await axios.post(
+      'https://localhost:5050/api/products/addProduct',
+      productDto,
+      { headers }
+    );
+
+    const responseData = response.data;
+    
+    console.log("RESPONSE: ", responseData);
+
+    if (response != null && responseData.isSuccess) {
+      return responseData.result;
+    } else {
+      console.log("Error")
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
+      //throw new Error('Something went wrong. Please try again.');
+      //return { isSuccess: false, error: 'Failed to complete the order. Please try again.' };
+    }
+  } catch (error) {
+    console.log(error)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Something went wrong. Please try again.',
+    });
+    //return { isSuccess: false, error: 'Failed to complete the order. Please try again.' };
   }
 });

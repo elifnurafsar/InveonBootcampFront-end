@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMyBasket, addToMyBasket, removeFromMyBasket, checkout } from "../Actions/Index"
+import { getMyBasket, addToMyBasket, removeFromMyBasket, checkout, removeAllFromMyBasket } from "../Actions/Index"
 
 
 const shoppingcartSlice = createSlice({
@@ -80,6 +80,16 @@ const shoppingcartSlice = createSlice({
             .addCase(checkout.rejected, (state, action) => {
                 state.loading = false;
                 state.error = "rejected";
+            })
+            .addCase(removeAllFromMyBasket.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(removeAllFromMyBasket.fulfilled, (state, action) => {
+                state.loading = false;
+                state.carts = []
+            })
+            .addCase(removeAllFromMyBasket.rejected, (state, action) => {
+                state.loading = false;
             });
     },
 })

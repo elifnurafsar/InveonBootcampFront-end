@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductData } from "../data/ProductData";
 import Swal from "sweetalert2";
-import { getAllProducts, getProductByID, getProductsByCategory, getUserFavorites, toggleFavorite, deleteAllFavorites } from "../Actions/Index"
+import { getAllProducts, getProductByID, getProductsByCategory, getUserFavorites, toggleFavorite, deleteAllFavorites, addProduct } from "../Actions/Index"
 
 
 const productsSlice = createSlice({
@@ -169,6 +169,19 @@ const productsSlice = createSlice({
                 
             })
             .addCase(deleteAllFavorites.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(addProduct.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addProduct.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log("full");
+                
+            })
+            .addCase(addProduct.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

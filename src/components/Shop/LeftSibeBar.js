@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector }  from "react-redux";
 import SideBar from './SideBar'
 import ProductCard from '../Common/Product/ProductCard'
+import AdminProductCard from '../Common/Product/AdminProductCard'
 import err_img from '../../assets/img/svg/chef.svg' 
 
 const LeftSideBar = () => {
@@ -9,53 +10,62 @@ const LeftSideBar = () => {
     const [products, setProducts] = useState(useSelector((state) => state.products.products).slice(0,9))
     const [page, setPage] = useState(1)
     let allData = [...useSelector((state) => state.products.products)];
-    const healthy = useSelector((state) => state.products.healthy);
-    const snacks = useSelector((state) => state.products.snacks);
-    const dessert = useSelector((state) => state.products.desserts);
-    const gluten_free = useSelector((state) => state.products.gluten_free);
-    const italian = useSelector((state) => state.products.italia);
-    const seasonal = useSelector((state) => state.products.seasonal);
+    let user = useSelector((state) => state.user.user);
     let lngth = Math.ceil(allData.length/10);
     let [maxPage, setMaxPage] = useState(lngth);
 
     const randProduct = (page) => {
         if(page){
-            let data = allData.sort((a, b) => 0.5 - Math.random())
-            data = data.slice(0,9);
+            let start = ((page-1) * 10);
+            let end = start + 9;
+            let data = allData.slice(start, end)
             setProducts(data);
             setPage(page);
         }
     }
 
-    const categoryFilter = (category) => {
-        if(category == "seasonal"){
-            setProducts(seasonal);
-            setMaxPage(Math.ceil(seasonal.length/10));
-        }
-        else if(category == "dessert"){
-            setProducts(dessert);
-            setMaxPage(Math.ceil(dessert.length/10));
-        }
-        else if(category == "italian"){
-            setProducts(italian);
-            setMaxPage(Math.ceil(italian.length/10));
-        }
-        else if(category == "gluten_free"){
-            setProducts(gluten_free);
-            setMaxPage(Math.ceil(gluten_free.length/10));
-        }
-        else if(category == "snacks"){
-            setProducts(snacks);
-            setMaxPage(Math.ceil(snacks.length/10));
-        }
-        else if(category == "healthy"){
-            setProducts(healthy);
-            setMaxPage(Math.ceil(healthy.length/10));
-        }
-        else {
+    const complexFilter = (name, category, price, reset) => {
+       
+        if(reset){
             setProducts(allData);
             setMaxPage(Math.ceil(allData.length/10));
         }
+        
+        else{
+            let new_products = allData;
+            if(category.length > 0){
+                if(category == "all"){
+                    setProducts(allData);
+                    setMaxPage(Math.ceil(allData.length/10));
+                }
+               else{
+                    new_products = allData.filter(product =>
+                        product.categoryName.toLowerCase().includes(category.toLowerCase()))
+               }
+                
+            }
+
+            // Filter by name
+            if(name.length > 0){
+                console.log("name filter")
+                new_products = new_products.filter(product =>
+                    product.name.toLowerCase().includes(name.toLowerCase()))
+                //setProducts(new_products);
+                //setMaxPage(Math.ceil(new_products.length/10));
+            }
+            
+            // Filter by price
+            if(price > 10){
+                console.log("price filter")
+                new_products = new_products.filter((product =>
+                    product.price <= price))
+                //setProducts(new_products);
+                //setMaxPage(Math.ceil(new_products.length/10));
+            }
+            setProducts(new_products)
+            setMaxPage(Math.ceil(new_products.length/10));
+        }
+        
     }
 
     return (
@@ -63,13 +73,19 @@ const LeftSideBar = () => {
             <section id="shop_main_area" className="ptb-100">
                 <div className="container">
                     <div className="row">
-                        <SideBar filterEvent={categoryFilter}/>
+                        <SideBar filterEvent={complexFilter}/>
                         {products != null && products.length > 0 ? (
                         <div className="col-lg-9">
                             <div className="row">
                                 {products.map((data, index) => (
                                     <div className="col-lg-4 col-md-4 col-sm-6 col-12" key={index}>
-                                        <ProductCard data={data} />
+                                        {user != null && user.role == "Admin" ? (
+                                                <AdminProductCard data={data} />
+                                            ):(
+                                                <ProductCard data={data} />
+                                            )
+                                        }
+                                       
                                     </div>
                                 ))}
                                 <div className="col-lg-12">
