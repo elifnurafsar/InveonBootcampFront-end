@@ -1,70 +1,18 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# React Restaurant Website
+![login](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/2e18c04b-8983-421e-b2a2-3f838c59904e)
+![main1](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/431ae1f4-0aef-432b-a8ec-36c8574b0b67)
+![main2](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/351dfffd-b2a4-44e4-8241-8fe6acbcb7b6)
+![filter](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/879592a4-a988-4e5c-8eb6-84531b175674)
+![filter2](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/f8e008d1-0859-4d15-827b-4771113b047b)
+![addtofav](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/342c33d3-78ac-431c-a202-c7ac54a7eece)
+![addedtoFav](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/a0c2bb5a-5b89-4c55-9c6b-303c75f2d3be)
+![shop1](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/62c75e64-7fd3-4a29-bdd3-86ab6a147044)
+![favs](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/4cb3e9ad-db7e-4e3e-8bba-28956397f5ff)
+![productcard](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/5d6213c0-35b6-4d34-b54c-ba38c5a02ffa)
+![addedtobasket](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/5fce5527-2906-4c22-b98a-cdbd5f8033b5)
+![addedtobasket2](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/4951e5dc-b61f-4216-a5df-b9188db9ca68)
+![basket](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/79c88385-ecc8-4374-9564-6187c4b89404)
+![removedfrombasket](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/e2637f9f-841b-4e08-9948-1078f3376359)
+![checkout](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/3967ae52-ff56-4cd1-be95-f60d18a73747)
+![loginreq](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/7cd45598-084a-4314-ba9f-8015e82dd132)
+![orderplaced](https://github.com/elifnurafsar/InveonBootcampFront-end/assets/60623941/1fb7603f-d82b-4495-9d17-4bb854c44d23)
